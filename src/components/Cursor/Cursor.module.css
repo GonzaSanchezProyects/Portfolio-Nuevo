@@ -1,0 +1,60 @@
+/* Deshabilitamos el cursor por defecto en toda la web para que luzca el nuestro */
+:global(body) {
+  cursor: none; /* ¡Arriesgado pero impactante! */
+}
+
+/* También en enlaces y botones */
+:global(a), :global(button) {
+  cursor: none;
+}
+
+.cursorDot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--text-main);
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999999;
+  pointer-events: none; /* Vital: para que no bloquee los clics */
+  margin-top: -4px; /* Centrado exacto */
+  margin-left: -4px;
+}
+
+.cursorTrailer {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--text-main);
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999998;
+  pointer-events: none;
+  transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s;
+  
+  /* EL EFECTO DE FUSIÓN */
+  mix-blend-mode: difference;
+}
+
+/* Estado cuando pasas sobre un botón o enlace */
+.hovered {
+  width: 60px; /* Se agranda */
+  height: 60px;
+  background-color: white; /* Se rellena de blanco */
+  border-color: transparent;
+  opacity: 0.8;
+  /* Al tener mix-blend-mode: difference, este fondo blanco 
+     hará que el texto negro de abajo se vea blanco y viceversa */
+}
+
+/* Ocultar en celulares (Touch no tiene cursor) */
+@media (max-width: 768px) {
+  .cursorDot, .cursorTrailer {
+    display: none;
+  }
+  :global(body) {
+    cursor: auto;
+  }
+}

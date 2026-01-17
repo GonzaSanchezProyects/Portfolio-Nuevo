@@ -1,0 +1,356 @@
+/* src/pages/FullPortfolio/FullPortfolio.module.css */
+
+/* === VARIABLES DE TEMA === */
+/* Definimos los colores aquí mismo para asegurar que funcionen en esta página */
+.pageContainer {
+  --bg-color: #050505;
+  --text-primary: #ffffff;
+  --text-secondary: #888888;
+  --card-bg: #0a0a0a;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --badge-bg: rgba(255, 255, 255, 0.05);
+  --btn-bg: rgba(255, 255, 255, 0.05);
+  --btn-hover: #ffffff;
+  --btn-text-hover: #000000;
+  
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  position: relative;
+  z-index: 1;
+  padding-bottom: 120px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* === TEMA CLARO (Light Mode) === */
+.pageContainer[data-theme="light"] {
+  --bg-color: #f3f4f6;          /* Gris muy claro de fondo */
+  --text-primary: #111827;      /* Texto casi negro */
+  --text-secondary: #4b5563;    /* Gris medio */
+  --card-bg: #ffffff;           /* Tarjeta blanca */
+  --card-border: rgba(0, 0, 0, 0.1);
+  --badge-bg: rgba(0, 0, 0, 0.05);
+  --btn-bg: rgba(0, 0, 0, 0.05);
+  --btn-hover: #000000;
+  --btn-text-hover: #ffffff;
+}
+
+/* === ANIMACIONES === */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 183, 77, 0.7); }
+  70% { box-shadow: 0 0 0 6px rgba(255, 183, 77, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 183, 77, 0); }
+}
+
+/* === HEADER === */
+.header {
+  padding: 2rem 1.5rem 0;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.topBar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary); /* Usa variable */
+  text-decoration: none;
+  font-weight: 600;
+  background: var(--btn-bg);    /* Usa variable */
+  padding: 0.8rem 1.2rem;
+  border-radius: 50px;
+  border: 1px solid var(--card-border);
+  transition: all 0.3s ease;
+}
+
+.backBtn:hover {
+  background: var(--btn-hover);
+  color: var(--btn-text-hover);
+  transform: translateX(-5px);
+}
+
+.headerContent {
+  text-align: center;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards 0.2s;
+}
+
+.title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  margin-bottom: 1rem;
+  /* Gradiente inteligente: en dark es blanco->gris, en light es negro->gris */
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* === GRID & CARDS === */
+.mainContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: var(--card-bg); /* Usa variable */
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Ajuste del Spotlight para Light Mode */
+.pageContainer[data-theme="light"] .card {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* Sombra suave en light mode */
+}
+
+/* El pseudo-elemento spotlight se mantiene sutil */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    800px circle at var(--mouse-x) var(--mouse-y), 
+    var(--text-primary), /* El brillo se adapta al color de texto principal */
+    transparent 40%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+:global(.spotlight-wrapper[data-hovering="true"]) .card::before {
+  opacity: 0.3; /* Un poco más suave */
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2); /* Sombra genérica */
+}
+
+/* === IMAGEN Y BADGES === */
+.imageContainer {
+  width: 100%;
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bgImage {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.7s ease;
+}
+
+.card:hover .bgImage {
+  transform: scale(1.1);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  /* El overlay siempre oscuro para que el texto blanco de los badges se lea */
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); 
+}
+
+.categoryBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.6); /* Siempre oscuro para contraste */
+  backdrop-filter: blur(8px);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: white; /* Siempre blanco sobre la foto */
+}
+
+.devBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(255, 166, 0, 0.15); 
+  border: 1px solid rgba(255, 166, 0, 0.4);
+  color: #ffb74d; 
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+.pulseDot {
+  width: 6px;
+  height: 6px;
+  background-color: #ffb74d;
+  border-radius: 50%;
+  box-shadow: 0 0 0 rgba(255, 183, 77, 0.7);
+  animation: pulse 2s infinite;
+}
+
+/* === CONTENIDO === */
+.content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  z-index: 2;
+}
+
+.cardTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary); /* Se adapta */
+}
+
+.cardDesc {
+  color: var(--text-secondary); /* Se adapta */
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.techStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.techTag {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: var(--badge-bg);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--card-border);
+}
+
+.viewBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+  background: var(--text-primary); /* Invierte colores */
+  color: var(--bg-color);          /* Invierte colores */
+  font-weight: 700;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.viewBtn:hover {
+  transform: scale(1.02);
+  opacity: 0.9;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards 0.8s;
+}
+
+@media (max-width: 768px) {
+  .title { font-size: 2.5rem; }
+  .grid { grid-template-columns: 1fr; }
+  .backText { display: none; }
+  .backBtn { border-radius: 50%; padding: 0.8rem; }
+}
+
+/* ... Tus estilos anteriores ... */
+
+/* === BOTÓN EN CONSTRUCCIÓN === */
+.devBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 1rem;
+  
+  /* Estilo Glass Oscuro / Deshabilitado */
+  background: rgba(128, 128, 128, 0.1);
+  border: 1px dashed var(--card-border);
+  color: var(--text-secondary);
+  
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: not-allowed;
+  transition: all 0.3s ease;
+}
+
+.devBtn:hover {
+  background: rgba(128, 128, 128, 0.15);
+}
+
+/* Animación de rotación para el icono */
+.spinIcon {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

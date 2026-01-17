@@ -1,0 +1,82 @@
+.tickerContainer {
+  width: 100%;
+  max-width: 1000px; /* Ajusta según tu diseño */
+  margin: 4rem auto; /* Espacio vertical */
+  margin-top: 2rem;
+  overflow: hidden; /* Oculta lo que se sale de la pantalla */
+  position: relative;
+  
+  /* LA MAGIA: Máscara de degradado para desvanecer bordes */
+  /* Hace que los iconos aparezcan de la nada a la izquierda y desaparezcan a la derecha */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+.track {
+  display: flex;
+  width: max-content; /* El ancho es la suma de todos los items */
+  gap: 3rem; /* Espacio entre items */
+  
+  /* Animación */
+  animation: scroll 25s linear infinite;
+}
+
+/* Pausar animación si el usuario pasa el mouse para leer */
+.track:hover {
+  animation-play-state: paused;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-secondary); /* Color sutil */
+  font-weight: 600;
+  font-size: 2.5rem;
+  white-space: nowrap; /* Evita que el texto se rompa */
+  transition: color 0.3s, transform 0.3s;
+  
+  /* Hacemos que sea seleccionable o clickeable si quieres */
+  cursor: default;
+}
+
+.item:hover {
+  color: var(--primary); /* Se ilumina al pasar el mouse */
+  transform: scale(1.1);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  color: var(--primary); /* Iconos con color principal */
+}
+
+/* KEYFRAMES */
+/* Movemos el track desde 0 hasta -50% (la mitad exacta) */
+/* Como duplicamos la lista, al llegar al 50% es idéntico al 0%, creando el loop invisible */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); /* Ojo: Depende del gap, si salta, ajusta esto */
+    /* NOTA TÉCNICA:
+       Para un loop matemático perfecto con gap, a veces se usa calc().
+       Pero con duplicación simple suele bastar. 
+       Si ves un "salto", asegúrate de que el gap sea parte del cálculo.
+       En este caso simple, -50% suele funcionar si los dos bloques son idénticos.
+    */
+  }
+}

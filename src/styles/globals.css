@@ -1,0 +1,93 @@
+@import './variables.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: none;
+}
+
+html, body {
+  /* Hace que el cursor siempre sea la flecha estándar, incluso sobre texto */
+  cursor: default; 
+  
+  /* Evita que el usuario pueda seleccionar texto (adiós barra vertical y fondo azul) */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge */
+  user-select: none;         /* Standard */
+}
+
+html {
+  /* Esto hace la magia */
+  scroll-behavior: smooth;
+  
+  /* Evita que el scroll tape el título por culpa del Navbar flotante */
+  scroll-padding-top: 100px; 
+}
+
+/* 2. EXCEPCIÓN IMPORTANTE: ELEMENTOS INTERACTIVOS */
+/* Queremos que los botones y enlaces sigan mostrando la "manito" */
+a, button, [role="button"] {
+  cursor: pointer;
+}
+
+/* 3. EXCEPCIÓN VITAL: FORMULARIOS */
+/* Si tienes un formulario de contacto, el usuario DEBE poder ver el cursor y seleccionar ahí */
+input, textarea {
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* 4. OPCIONAL: Si quieres permitir seleccionar SOLO el código o párrafos específicos */
+.selectable {
+  user-select: text;
+  cursor: text;
+}
+
+body {
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, sans-serif; /* Importa Inter de Google Fonts */
+  transition: background-color 0.4s ease, color 0.2s ease;
+  overflow-x: hidden;
+}
+
+/* Utilidad para el efecto vidrio (Glassmorphism) */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+}
+
+/* SCROLLBAR PERSONALIZADA */
+/* Ancho de la barra */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* El "carril" de fondo */
+::-webkit-scrollbar-track {
+  background: var(--bg-body); 
+}
+
+/* La "manija" que mueves */
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 5px;
+  border: 2px solid var(--bg-body); /* Crea un borde para que parezca flotar */
+}
+
+/* Al pasar el mouse sobre la barra */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+.magnetic-item {
+  /* Transición tipo "Spring" (Rebote suave) */
+  transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+  /* Importante: display inline-block para que se pueda mover */
+  display: inline-block; 
+}

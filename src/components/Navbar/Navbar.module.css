@@ -1,0 +1,35 @@
+.nav {
+  position: fixed;
+  bottom: 30px; /* Flotando abajo para fácil acceso móvil */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 100px;
+  z-index: 100;
+  box-shadow: var(--shadow-soft);
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--border-subtle);
+}
+
+.btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn:hover {
+  color: var(--text-main);
+  transform: translateY(-2px);
+}

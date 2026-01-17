@@ -1,0 +1,116 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  padding: 2rem 1rem;
+}
+
+/* La línea vertical central */
+.line {
+  position: absolute;
+  left: 20px; /* Alineada a la izquierda en móvil */
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom, 
+    transparent, 
+    var(--primary) 20%, 
+    var(--primary) 80%, 
+    transparent
+  );
+  opacity: 0.3;
+}
+
+.item {
+  position: relative;
+  padding-left: 60px; /* Espacio para la línea y el punto */
+  margin-bottom: 3rem;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+/* El punto brillante en la línea */
+.dot {
+  position: absolute;
+  left: 11px; /* Centrado sobre la línea de 2px (left 20px) */
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--bg-body);
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 15px var(--primary); /* Glow effect */
+  z-index: 10;
+  transition: transform 0.3s ease;
+}
+
+.item:hover .dot {
+  transform: scale(1.3);
+  background-color: var(--primary);
+}
+
+/* El contenido (Tarjeta transparente) */
+.content {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  transition: transform 0.3s var(--transition-smooth);
+}
+
+.content:hover {
+  transform: translateX(10px);
+  border-color: var(--primary);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.2rem;
+}
+
+.place {
+  font-size: 1rem;
+  color: var(--primary);
+  font-weight: 600;
+  font-family: var(--font-display);
+}
+
+.dateBadge {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Resaltar el item actual (la carrera universitaria) */
+.active .dateBadge {
+  background: var(--primary);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);
+}
+
+.desc {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Ajuste para Desktop: Línea al centro opcional, 
+   pero para CVs suele ser mejor a la izquierda para leer rápido. 
+   Lo dejaremos a la izquierda por legibilidad. */

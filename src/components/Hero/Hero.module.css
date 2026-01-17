@@ -1,0 +1,162 @@
+.container {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.avatarPortal {
+  position: relative;
+  width: 350px;  /* Tamaño total */
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  /* Un fondo oscuro para que la luz resalte */
+  background: linear-gradient(45deg, #000000, #1a1a1a);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+  overflow: hidden; /* Mantiene todo dentro del círculo */
+  /* Una animación de flotación suave */
+  animation: float 6s ease-in-out infinite;
+}
+
+/* 2. El Anillo de Energía Giratorio (La magia) */
+.avatarPortal::before {
+  content: '';
+  position: absolute;
+  /* Hacemos que sea mucho más grande que el contenedor */
+  width: 150%;
+  height: 150%;
+  /* Un gradiente cónico que crea el efecto de "rayos" de luz */
+  background: conic-gradient(
+    transparent, 
+    var(--primary), 
+    transparent 30%
+  );
+  /* Animación de giro constante */
+  animation: rotate 4s linear infinite;
+}
+
+/* 3. Un segundo anillo para más profundidad */
+.avatarPortal::after {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  /* Usamos el color secundario para contraste */
+  background: conic-gradient(
+    transparent, 
+    var(--secondary), 
+    transparent 50%
+  );
+  /* Gira en dirección opuesta y más lento */
+  animation: rotate 6s linear infinite reverse;
+}
+
+/* 4. La Imagen real (se coloca encima de las luces) */
+.avatarImage {
+  position: relative;
+  z-index: 10; /* Asegura que esté encima de los anillos */
+  /* Hacemos la imagen un poco más chica que el contenedor para ver el borde de luz */
+  width: 95%; 
+  height: 95%;
+  border-radius: 50%;
+  object-fit: cover;
+  /* Un borde interno para separar la foto de la luz */
+  border: 4px solid rgba(20, 20, 20, 0.8);
+  background-color: var(--bg-body);
+}
+
+
+/* --- ANIMACIONES NECESARIAS --- */
+
+/* Animación de giro */
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Animación de flotación suave */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .avatarPortal {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+.title {
+  /* ESCRITORIO: Obligamos a que sea una sola línea */
+  white-space: nowrap; 
+
+  font-size: clamp(3rem, 6vw, 7rem); /* Ajustado para escritorio */
+  
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.2;
+  
+  background: linear-gradient(to bottom right, var(--text-main) 20%, var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  width: 100%;
+  max-width: 100%;
+}
+
+.role {
+  font-size: 1.6rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  max-width: 600px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 1.15rem;
+}
+
+/* === RESPONSIVE (CELULARES) === */
+@media (max-width: 768px) {
+  .avatar {
+    width: 180px;
+    height: 180px;
+  }
+
+  .title {
+    /* AQUÍ ESTÁ EL CAMBIO: */
+    /* Permitimos que el texto salte de línea */
+    white-space: normal; 
+    
+    /* Forzamos un tamaño grande para que se vea imponente */
+    font-size: 3.5rem; 
+    
+    /* Reducimos el espacio entre líneas para que queden bien pegados */
+    line-height: 1;
+    
+    /* Aseguramos que rompa si es necesario */
+    word-wrap: break-word;
+  }
+}

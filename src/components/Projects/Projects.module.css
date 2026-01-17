@@ -1,0 +1,446 @@
+/* Projects.module.css - FINAL VERSION (Spotlight Fix + Modal Blur + Carousel) */
+
+/* ========================================= */
+/* === 1. GRILLA Y TARJETAS (Spotlight) === */
+/* ========================================= */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 350px;
+  padding: 2rem;
+  background-color: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  isolation: isolate;
+}
+
+/* --- EFECTO SPOTLIGHT (Con data-hovering Fix) --- */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    800px circle at var(--mouse-x) var(--mouse-y), 
+    rgba(255, 255, 255, 0.1), 
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 2;
+  pointer-events: none;
+  padding: 1.5px;
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y), 
+    rgba(255, 255, 255, 0.8), 
+    transparent 40%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+/* ACTIVACIÓN DE LUZ: Usando el atributo del JS */
+.grid[data-hovering="true"] .card::before,
+.grid[data-hovering="true"] .card::after {
+  opacity: 1;
+}
+
+/* --- IMAGEN Y TEXTOS CARD --- */
+.cardImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.6;
+  filter: grayscale(40%);
+}
+
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 40%, rgba(10,10,10,0.95) 100%);
+  z-index: -1;
+}
+
+.card:hover { transform: translateY(-5px); }
+.card:hover .cardImage { transform: scale(1.08); filter: grayscale(0%); opacity: 0.8; }
+
+.badge {
+  position: relative;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: auto;
+  width: fit-content;
+}
+
+.cardTitle {
+  position: relative;
+  z-index: 10;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.cardDesc {
+  position: relative;
+  z-index: 10;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.large { grid-column: span 1; }
+.tall { grid-row: span 1; }
+@media (min-width: 768px) {
+  .large { grid-column: span 2; }
+  .tall { grid-row: span 2; }
+}
+
+/* ========================================================= */
+/* === 2. MODAL CON BLUR (Centrado + Fondo Borroso) === */
+/* ========================================================= */
+
+@keyframes fadeIn { to { opacity: 1; } }
+
+@keyframes modalPopEntry {
+  from { opacity: 0; transform: scale(0.9) translateY(30px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes slideUpFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); 
+  backdrop-filter: blur(16px); 
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.modalContent {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
+  width: 100%;
+  max-width: 800px;
+  max-height: 85vh;
+  border-radius: 24px;
+  opacity: 0;
+  animation: modalPopEntry 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.1s;
+  overflow-y: auto;
+}
+
+/* ========================================================= */
+/* === 3. CINEMATIC CAROUSEL (Estilo Netflix/Apple) === */
+/* ========================================================= */
+
+.cinematicCarousel {
+  width: 100%;
+  height: 400px; /* Un poco más alto para impacto visual */
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden; /* Vital para que no se salga la imagen al hacer zoom */
+  background: #000; /* Fondo negro por si tarda en cargar la imagen */
+  
+  /* Animación de entrada del bloque entero */
+  opacity: 0;
+  animation: slideUpFadeIn 0.6s ease forwards 0.2s;
+}
+
+/* LAS IMÁGENES (Slides) */
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  
+  /* ESTADO INACTIVO (Por defecto) */
+  opacity: 0;
+  transform: scale(1.1); /* Empieza un poco "zoomeada" */
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 8s ease; /* Zoom lento constante */
+  z-index: 1;
+}
+
+/* ESTADO ACTIVO */
+.activeSlide {
+  opacity: 1;
+  transform: scale(1); /* Vuelve a tamaño normal suavemente o se queda quieta */
+  z-index: 2;
+}
+
+/* Overlay sutil para que los controles blancos siempre se vean */
+.carouselOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom, 
+    rgba(0,0,0,0.2) 0%, 
+    transparent 20%, 
+    transparent 60%, 
+    rgba(0,0,0,0.8) 100%
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* BOTONES DE NAVEGACIÓN (Flechas) */
+.navBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  /* Glassmorphism puro */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  opacity: 0; /* Ocultos por defecto hasta hover del carrusel (opcional) */
+}
+
+/* Mostramos los botones siempre en móvil, o al hover en PC */
+.cinematicCarousel:hover .navBtn {
+  opacity: 1;
+}
+
+.navBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.prev { left: 1.5rem; }
+.next { right: 1.5rem; }
+
+/* INDICADORES (Story Bars) */
+.indicatorsBar {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+  width: 80%; /* Ancho de la zona de barras */
+  max-width: 400px;
+  justify-content: center;
+}
+
+.bar {
+  height: 4px; /* Barras finas */
+  flex: 1; /* Se distribuyen equitativamente */
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto de llenado de la barra activa */
+.activeBar {
+  background: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Hover en las barras */
+.bar:hover {
+  background: rgba(255, 255, 255, 0.6);
+  height: 6px; /* Se hace un poquito más gorda al querer clickear */
+  transform: translateY(-1px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .cinematicCarousel { height: 250px; }
+  .navBtn { 
+    width: 36px; height: 36px; 
+    opacity: 1; /* Siempre visibles en móvil */
+    background: rgba(0,0,0,0.3); /* Un poco más oscuros para contraste */
+  }
+  .prev { left: 0.5rem; }
+  .next { right: 0.5rem; }
+  .indicatorsBar { width: 90%; bottom: 1rem; }
+}
+
+/* === CONTENIDO MODAL === */
+
+.modalBody {
+  padding: 2.5rem;
+}
+
+.modalBody > div:first-child { opacity: 0; animation: slideUpFadeIn 0.6s ease forwards 0.3s; }
+
+.modalTitle {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: slideUpFadeIn 0.6s ease forwards 0.4s;
+}
+
+.modalDesc {
+  color: #ccc;
+  line-height: 1.7;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: slideUpFadeIn 0.6s ease forwards 0.5s;
+}
+
+.visitBtn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  background: white;
+  color: black;
+  padding: 1rem 2rem;
+  border-radius: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  width: fit-content;
+  box-shadow: 0 10px 20px -10px rgba(255,255,255,0.5);
+  opacity: 0;
+  animation: slideUpFadeIn 0.6s ease forwards 0.6s;
+}
+
+.visitBtn:hover {
+  transform: translateY(-3px) scale(1.02);
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 15px 30px -10px rgba(255,255,255,0.7);
+}
+
+/* Estilo para botón 'En Construcción' */
+.disabledBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  padding: 1rem 2rem;
+  border-radius: 14px;
+  font-weight: 600;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+  width: fit-content;
+  opacity: 0;
+  animation: slideUpFadeIn 0.6s ease forwards 0.6s;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards 0.8s;
+}
+
+.closeBtn:hover {
+  background: rgba(255,255,255,0.2);
+  transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+  .modalContent {
+    max-height: 80vh;
+    max-width: 95%;
+  }
+  .carouselContainer { height: 220px; }
+  .modalBody { padding: 1.5rem; }
+  .modalTitle { font-size: 1.8rem; }
+  .visitBtn, .disabledBtn { width: 100%; justify-content: center; }
+  .closeBtn { top: 1rem; right: 1rem; background: rgba(0,0,0,0.8); }
+  .navBtn { width: 32px; height: 32px; }
+}

@@ -1,0 +1,54 @@
+:root {
+  /* Espaciado y Layout */
+  --container-width: 1200px;
+  --header-height: 80px;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+
+  /* Animaciones */
+  --transition-fast: 0.2s ease;
+  --transition-smooth: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  
+  /* Tipografías (Asegurando que las tengas) */
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', monospace;
+}
+
+/* TEMA CLARO (Light Mode) */
+/* Lo hicimos un poco más cálido para que no sea blanco hospital */
+[data-theme="light"] {
+  --bg-body: #FAFAFA; /* Antes era un gris frío, ahora es más limpio */
+  --bg-card: #FFFFFF;
+  --bg-glass: rgba(255, 255, 255, 0.75);
+  
+  --text-main: #18181B; /* Gris muy oscuro, no negro puro (más legible) */
+  --text-secondary: #52525B;
+  
+  --primary: #4F46E5; 
+  --accent: #EC4899; 
+  
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.05);
+}
+
+/* TEMA OSCURO (Dark Mode) - EL CAMBIO IMPORTANTE */
+[data-theme="dark"] {
+  /* En lugar de negro #050505, usamos un gris azulado profundo */
+  --bg-body: #0F1115; 
+  
+  /* Las tarjetas ahora son un poco más claras para destacar del fondo */
+  --bg-card: #181A20; 
+  
+  /* Vidrio más sutil */
+  --bg-glass: rgba(24, 26, 32, 0.75);
+  
+  --text-main: #EDEDED; /* Blanco suave */
+  --text-secondary: #A1A1AA;
+  
+  --primary: #818CF8; 
+  --accent: #F472B6;
+  
+  /* Bordes más visibles para definir límites sin ser duros */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --shadow-soft: 0 20px 40px -10px rgba(0,0,0,0.4);
+}

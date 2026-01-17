@@ -1,0 +1,129 @@
+.section {
+  max-width: 1000px;
+  margin: 0 auto 6rem; /* Margen inferior para separar */
+  padding: 0 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(to right, var(--text-main), var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr; /* Columna izq más ancha */
+  gap: 1.5rem;
+}
+
+/* TARJETA DE BIO (Izquierda) */
+.bioCard {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  border-radius: var(--radius-lg);
+}
+
+.bioText {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+.highlight {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* COLUMNA DERECHA (Widgets) */
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Widget Ubicación */
+.locationCard {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--radius-md);
+}
+
+.timeBox {
+  text-align: right;
+}
+
+.liveDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #10b981; /* Verde online */
+  border-radius: 50%;
+  margin-right: 6px;
+  box-shadow: 0 0 10px #10b981;
+  animation: pulse 2s infinite;
+}
+
+/* Widget Learning */
+.learningCard {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), transparent);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+.techBadge {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 6px 12px;
+  background: var(--bg-body);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Botón CV */
+.cvCard {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  text-decoration: none; /* Para el tag <a> */
+}
+
+.cvCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+}
+
+.cvContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

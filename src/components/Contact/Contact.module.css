@@ -1,0 +1,120 @@
+/* src/components/Contact/Contact.module.css */
+
+.container {
+  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  padding: 3rem 2rem;
+  border-radius: 24px;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  background: rgba(20, 20, 20, 0.6); 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-main);
+}
+
+.desc {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+
+/* === LAYOUT === */
+.actionsWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* 1. Botón de Email (Rectangular) */
+.emailBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  
+  /* DIMENSIONES FIJAS */
+  height: 3.5rem; /* Misma altura que los iconos sociales */
+  padding: 0 2rem; /* Relleno solo a los lados */
+  
+  background-color: #f0f0f0; 
+  color: #1a1a1a; 
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+}
+.emailBtn svg{
+    margin-right: 0.5rem;
+    
+}
+
+.socialGroup {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* 2. Botones Sociales (Cuadrados) */
+.socialBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* DIMENSIONES FIJAS */
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0; /* IMPORTANTE: Quita el relleno por defecto */
+  
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s, color 0.3s;
+  
+  /* Corrección para iconos SVG */
+  line-height: 0; 
+}
+
+.socialBtn svg {
+  /* Asegura que el icono no tenga márgenes extraños */
+  display: flex;
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+.socialBtn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+}
+
+.emailText {
+  margin-top: 2rem;
+  opacity: 0.5;
+  font-size: 0.9rem;
+  font-family: monospace;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .actionsWrapper {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .emailBtn {
+    width: 100%;
+  }
+}
