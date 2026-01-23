@@ -7,6 +7,7 @@ import {
 import { useAppContext } from '../../context/AppContext';
 import styles from './Projects.module.css';
 import SpotlightWrapper from '../SpotlightWrapper/SpotlightWrapper';
+// Importamos Link para la navegación interna
 import { Link } from 'react-router-dom';
 
 // =========================================================
@@ -37,25 +38,25 @@ import lab4 from '../../assets/lab/4.webp';
 
 const imageAssets = {
   genfit: [
-    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop", // PORTADA (Index 0)
-    genfit2, // Galería 1
-    genfit3, // Galería 2
-    genfit4  // Galería 3
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop",
+    genfit2,
+    genfit3,
+    genfit4
   ],
   fitseo: [
-    "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1470&auto=format&fit=crop", // PORTADA
+    "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1470&auto=format&fit=crop",
     fitseo2,
     fitseo3,
     fitseo4
   ],
   ipn: [
-    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1470&auto=format&fit=crop", // PORTADA
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1470&auto=format&fit=crop",
     ipn2,
     ipn3,
     ipn4
   ],
   lab: [
-    "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1470&auto=format&fit=crop", // PORTADA
+    "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1470&auto=format&fit=crop",
     lab2,
     lab3,
     lab4
@@ -67,22 +68,19 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [mounted, setMounted] = useState(false);
   
-  // Estado para el índice de la GALERÍA (no del array completo)
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     setMounted(true);
     if (selectedProject) {
       document.body.style.overflow = 'hidden';
-      setCurrentSlide(0); // Reinicia al abrir el modal
+      setCurrentSlide(0);
     } else {
       document.body.style.overflow = 'unset';
     }
     return () => { document.body.style.overflow = 'unset'; }
   }, [selectedProject]);
 
-  // --- LÓGICA DE NAVEGACIÓN ACTUALIZADA ---
-  // Ahora usamos 'selectedProject.gallery.length' en lugar de images.length
   const nextSlide = (e) => {
     e.stopPropagation();
     if (!selectedProject) return;
@@ -95,17 +93,16 @@ export default function Projects() {
     setCurrentSlide((prev) => (prev - 1 + selectedProject.gallery.length) % selectedProject.gallery.length);
   };
 
-  // --- ESTRUCTURA DE DATOS MODIFICADA ---
-  // Aquí separamos la Portada de la Galería
+  // --- DATOS CORREGIDOS ---
   const projectsData = [
     {
       id: 1,
       key: 'genfit', 
-      cover: imageAssets.genfit[0],           // Solo la primera foto
-      gallery: imageAssets.genfit.slice(1),   // Todas MENOS la primera
+      cover: imageAssets.genfit[0],
+      gallery: imageAssets.genfit.slice(1),
       icon: <BrainCircuit size={14} />,
       badge: "AI Powered",
-      link: "https://genfit.lat",
+      link: "https://genfit.lat", // Link externo (String)
       large: true,
       inProgress: false
     },
@@ -127,7 +124,7 @@ export default function Projects() {
       gallery: imageAssets.ipn.slice(1),
       icon: <Computer size={14} />,
       badge: "Business",
-      link: <Link to="/portfolio" className={styles.tuClase}></Link>,
+      link: "/portfolio", // <--- CORREGIDO: String simple, no componente
       large: false,
       inProgress: false
     },
@@ -138,7 +135,7 @@ export default function Projects() {
       gallery: imageAssets.lab.slice(1),
       icon: <Computer size={14} />,
       badge: "Tech Lab",
-      link: "/portfolio",
+      link: "/portfolio", // Link interno (String)
       large: true,
       inProgress: false
     }
@@ -155,7 +152,6 @@ export default function Projects() {
             onClick={() => setSelectedProject(project)}
             className={`${styles.card} ${project.large ? styles.large : ''} spotlight-card`}
           >
-            {/* AQUÍ USAMOS LA PORTADA (project.cover) */}
             <div className={styles.cardImage} style={{ backgroundImage: `url(${project.cover})` }} />
             <div className={styles.cardOverlay} />
             <div className={styles.badge}>
@@ -170,7 +166,7 @@ export default function Projects() {
         ))}
       </SpotlightWrapper>
 
-      {/* === MODAL & CINEMATIC CAROUSEL === */}
+      {/* === MODAL === */}
       {mounted && selectedProject && createPortal(
         <div className={styles.modalOverlay} onClick={handleClose}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -179,10 +175,8 @@ export default function Projects() {
               <X size={24} />
             </button>
 
-            {/* CONTENEDOR DEL CARRUSEL CINEMÁTICO */}
+            {/* CARRUSEL */}
             <div className={styles.cinematicCarousel}>
-              
-              {/* 1. RENDERIZAMOS LA GALERÍA (No la portada) */}
               {selectedProject.gallery.map((img, index) => (
                 <div 
                   key={index}
@@ -193,7 +187,6 @@ export default function Projects() {
 
               <div className={styles.carouselOverlay} />
 
-              {/* 3. Controles (Solo si hay más de 1 imagen en la galería) */}
               {selectedProject.gallery.length > 1 && (
                 <>
                   <button className={`${styles.navBtn} ${styles.prev}`} onClick={prevSlide}>
@@ -202,8 +195,6 @@ export default function Projects() {
                   <button className={`${styles.navBtn} ${styles.next}`} onClick={nextSlide}>
                     <ChevronRight size={28} />
                   </button>
-
-                  {/* 4. Indicadores */}
                   <div className={styles.indicatorsBar}>
                     {selectedProject.gallery.map((_, index) => (
                       <div 
@@ -219,12 +210,12 @@ export default function Projects() {
                 </>
               )}
               
-              {/* Caso borde: Si la galería está vacía o tiene 1 sola foto, muestra algo por defecto si quieres */}
               {selectedProject.gallery.length === 0 && (
                  <div className={`${styles.slide} ${styles.activeSlide}`} style={{ backgroundImage: `url(${selectedProject.cover})` }} />
               )}
             </div>
 
+            {/* BODY DEL MODAL */}
             <div className={styles.modalBody}>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
                  <div className={styles.badge} style={{ position: 'static' }}>
@@ -242,14 +233,23 @@ export default function Projects() {
               <h2 className={styles.modalTitle}>{t.projects[`${selectedProject.key}_title`]}</h2>
               <p className={styles.modalDesc}>{t.projects[`${selectedProject.key}_desc`]}</p>
 
+              {/* LÓGICA DE BOTÓN ARREGLADA */}
               {selectedProject.inProgress ? (
                 <button className={styles.disabledBtn} disabled>
                    Wait for it... <Construction size={18} />
                 </button>
               ) : (
-                <a href={selectedProject.link} target="_blank" rel="noopener noreferrer" className={styles.visitBtn}>
-                  Visit Project <ExternalLink size={18} />
-                </a>
+                // SI EL LINK EMPIEZA CON '/', ES INTERNO -> USA <Link>
+                selectedProject.link.startsWith('/') ? (
+                  <Link to={selectedProject.link} className={styles.visitBtn} onClick={handleClose}>
+                    View Gallery <ExternalLink size={18} />
+                  </Link>
+                ) : (
+                  // SI NO, ES EXTERNO -> USA <a>
+                  <a href={selectedProject.link} target="_blank" rel="noopener noreferrer" className={styles.visitBtn}>
+                    Visit Project <ExternalLink size={18} />
+                  </a>
+                )
               )}
             </div>
 
