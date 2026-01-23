@@ -7,6 +7,7 @@ import {
 import { useAppContext } from '../../context/AppContext';
 import styles from './Projects.module.css';
 import SpotlightWrapper from '../SpotlightWrapper/SpotlightWrapper';
+import { Link } from 'react-router-dom';
 
 // =========================================================
 // === IMPORTACIÓN DE ASSETS LOCALES ===
@@ -126,7 +127,7 @@ export default function Projects() {
       gallery: imageAssets.ipn.slice(1),
       icon: <Computer size={14} />,
       badge: "Business",
-      link: "https://https://ipn-software.vercel.app/",
+      link: <Link to="/portfolio" className={styles.tuClase}></Link>,
       large: false,
       inProgress: false
     },
