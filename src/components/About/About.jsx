@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Download, BookOpen, Clock } from 'lucide-react';
+import { MapPin, Download, BookOpen } from 'lucide-react'; // Clock no se usaba, lo quité
 import { useAppContext } from '../../context/AppContext';
 import styles from './About.module.css';
 
@@ -28,7 +28,7 @@ export default function About() {
       
       <div className={styles.grid}>
         
-        {/* COLUMNA 1: HISTORIA (Storytelling) */}
+        {/* COLUMNA 1: HISTORIA */}
         <article className={`${styles.bioCard} glass-panel`}>
           <p className={styles.bioText}>
             {t.about.bio_p1}
@@ -78,9 +78,14 @@ export default function About() {
              </div>
           </div>
 
-          {/* Botón CV */}
-          {/* Reemplaza el href con la ruta a tu PDF real en public/ */}
-          <a href="/cv_gonzalo_sanchez.pdf" download className={`${styles.cvCard} glass-panel`}>
+          {/* === BOTÓN CV CONFIGURADO === */}
+          <a 
+            href="/GonzaloSanchezCV.pdf" // La ruta empieza con / (refiere a la carpeta public)
+            download="GonzaloSanchezCV.pdf" // Nombre con el que se guardará el archivo
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${styles.cvCard} glass-panel`}
+          >
             <div className={styles.cvContent}>
               <Download size={20} />
               <span>{t.about.cv_btn}</span>
