@@ -18,6 +18,7 @@ import About from './components/About/About';
 import Education from './components/Education/Education';
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
+import Gencore from './components/Gencore/Gencore';
 
 // Páginas Nuevas
 import FullPortfolio from './pages/FullPortfolio/FullPortfolio';
@@ -55,6 +56,13 @@ const Home = () => {
       <div style={{ marginBottom: '6rem' }}>
         <TechTicker />
       </div>
+
+      {/* NUEVA SECCIÓN GENCORE */}
+      <ScrollReveal>
+        <div style={{ marginTop: '10rem' }}>
+          <Gencore />
+        </div>
+      </ScrollReveal>
       
       {/* 2. PROYECTOS (Versión Resumida para Home) */}
       <ScrollReveal>

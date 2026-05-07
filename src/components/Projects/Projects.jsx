@@ -1,73 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { 
-  BrainCircuit, Smartphone, Computer, X, ExternalLink, 
+  Bot, Mic, Globe, X, ExternalLink, 
   ChevronLeft, ChevronRight, Construction 
 } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
 import styles from './Projects.module.css';
 import SpotlightWrapper from '../SpotlightWrapper/SpotlightWrapper';
-// Importamos Link para la navegación interna
 import { Link } from 'react-router-dom';
 
-// =========================================================
-// === IMPORTACIÓN DE ASSETS LOCALES ===
-// =========================================================
-
-// GENFIT
-import genfit2 from '../../assets/genfit/2.webp'; 
-import genfit3 from '../../assets/genfit/3.webp';
-import genfit4 from '../../assets/genfit/4.webp';
-
-// FITSEO
-import fitseo2 from '../../assets/fitseo/2.webp';
-import fitseo3 from '../../assets/fitseo/3.webp';
-import fitseo4 from '../../assets/fitseo/4.webp';
-
-// IPN
-import ipn2 from '../../assets/ipn/2.webp';
-import ipn3 from '../../assets/ipn/3.webp';
-import ipn4 from '../../assets/ipn/4.webp';
-
-// LAB
-import lab2 from '../../assets/lab/2.webp';
-import lab3 from '../../assets/lab/3.webp';
-import lab4 from '../../assets/lab/4.webp';
-
-// =========================================================
+import botPortada from '../../assets/bot/bot.png';
+import DailyReady from '../../assets/daily/daily.png';
 
 const imageAssets = {
-  genfit: [
-    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop",
-    genfit2,
-    genfit3,
-    genfit4
+  bot_n8n: [
+    botPortada
   ],
-  fitseo: [
-    "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1470&auto=format&fit=crop",
-    fitseo2,
-    fitseo3,
-    fitseo4
+  daily_ready: [
+    DailyReady
   ],
-  ipn: [
-    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1470&auto=format&fit=crop",
-    ipn2,
-    ipn3,
-    ipn4
-  ],
-  lab: [
-    "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1470&auto=format&fit=crop",
-    lab2,
-    lab3,
-    lab4
-  ]
+  gencore: ["https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1470&auto=format&fit=crop"]
 };
 
 export default function Projects() {
-  const { t } = useAppContext();
+  const { lang } = useAppContext(); 
   const [selectedProject, setSelectedProject] = useState(null);
   const [mounted, setMounted] = useState(false);
-  
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -93,51 +51,51 @@ export default function Projects() {
     setCurrentSlide((prev) => (prev - 1 + selectedProject.gallery.length) % selectedProject.gallery.length);
   };
 
-  // --- DATOS CORREGIDOS ---
   const projectsData = [
     {
       id: 1,
-      key: 'genfit', 
-      cover: imageAssets.genfit[0],
-      gallery: imageAssets.genfit.slice(1),
-      icon: <BrainCircuit size={14} />,
-      badge: "AI Powered",
-      link: "https://genfit.lat", // Link externo (String)
-      large: true,
-      inProgress: false
+      key: 'bot_n8n', 
+      cover: imageAssets.bot_n8n[0],
+      gallery: imageAssets.bot_n8n.slice(1),
+      icon: <Bot size={14} />,
+      badge: "n8n Automation",
+      link: "#", 
+      large: false, 
+      inProgress: false,
+      title: lang === 'es' ? "Bot de Prospección n8n" : "n8n Lead Gen Bot",
+      desc: lang === 'es' 
+        ? "Script automático que busca en Google Maps, recolecta correos corporativos y envía publicidad de forma autónoma."
+        : "Automated script that searches Google Maps, collects corporate emails, and sends ads autonomously."
     },
     {
       id: 2,
-      key: 'fitseo',
-      cover: imageAssets.fitseo[0],
-      gallery: imageAssets.fitseo.slice(1),
-      icon: <Smartphone size={14} />,
-      badge: "Mobile App",
+      key: 'daily_ready',
+      cover: imageAssets.daily_ready[0],
+      gallery: imageAssets.daily_ready.slice(1),
+      icon: <Mic size={14} />,
+      badge: "AI Scoring",
       link: "#",
-      large: false,
-      inProgress: true
+      large: false, // <--- Mitad de fila
+      inProgress: true, // <--- CAMBIO: Activamos "En construcción"
+      title: "DailyReady",
+      desc: lang === 'es'
+        ? "Plataforma para practicar Dailys en inglés. Toma tu micrófono y puntúa tu fluidez mediante IA."
+        : "Platform to practice English Dailies. Uses your microphone and scores your fluency using AI."
     },
     {
       id: 3,
-      key: 'ipn',
-      cover: imageAssets.ipn[0],
-      gallery: imageAssets.ipn.slice(1),
-      icon: <Computer size={14} />,
-      badge: "Business",
-      link: "/portfolio", // <--- CORREGIDO: String simple, no componente
-      large: false,
-      inProgress: false
-    },
-    {
-      id: 4,
-      key: 'lab',
-      cover: imageAssets.lab[0],
-      gallery: imageAssets.lab.slice(1),
-      icon: <Computer size={14} />,
-      badge: "Tech Lab",
-      link: "/portfolio", // Link interno (String)
-      large: true,
-      inProgress: false
+      key: 'gencore',
+      cover: imageAssets.gencore[0],
+      gallery: imageAssets.gencore.slice(1),
+      icon: <Globe size={14} />,
+      badge: "Web Business",
+      link: "/portfolio", 
+      large: true, // <--- CAMBIO: Mitad de fila (Llena el espacio en blanco)
+      inProgress: false,
+      title: lang === 'es' ? "Mi antiguo negocio de desarrollo web" : "My old web development business",
+      desc: lang === 'es' 
+        ? "Catálogo de soluciones de desarrollo web a medida creadas para empresas y negocios reales."
+        : "Catalog of custom web development solutions created for real companies and businesses."
     }
   ];
 
@@ -159,23 +117,18 @@ export default function Projects() {
               <span>{project.badge}</span>
             </div>
             <div className={styles.cardContent}>
-              <h3 className={styles.cardTitle}>{t.projects[`${project.key}_title`]}</h3>
-              <p className={styles.cardDesc}>{t.projects[`${project.key}_desc`]} </p>
+              <h3 className={styles.cardTitle}>{project.title}</h3>
+              <p className={styles.cardDesc}>{project.desc}</p>
             </div>
           </article>
         ))}
       </SpotlightWrapper>
 
-      {/* === MODAL === */}
       {mounted && selectedProject && createPortal(
         <div className={styles.modalOverlay} onClick={handleClose}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            
-            <button className={styles.closeBtn} onClick={handleClose}>
-              <X size={24} />
-            </button>
+            <button className={styles.closeBtn} onClick={handleClose}><X size={24} /></button>
 
-            {/* CARRUSEL */}
             <div className={styles.cinematicCarousel}>
               {selectedProject.gallery.map((img, index) => (
                 <div 
@@ -184,75 +137,50 @@ export default function Projects() {
                   style={{ backgroundImage: `url(${img})` }}
                 />
               ))}
-
               <div className={styles.carouselOverlay} />
-
               {selectedProject.gallery.length > 1 && (
                 <>
-                  <button className={`${styles.navBtn} ${styles.prev}`} onClick={prevSlide}>
-                    <ChevronLeft size={28} />
-                  </button>
-                  <button className={`${styles.navBtn} ${styles.next}`} onClick={nextSlide}>
-                    <ChevronRight size={28} />
-                  </button>
-                  <div className={styles.indicatorsBar}>
-                    {selectedProject.gallery.map((_, index) => (
-                      <div 
-                        key={index}
-                        className={`${styles.bar} ${index === currentSlide ? styles.activeBar : ''}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCurrentSlide(index);
-                        }}
-                      />
-                    ))}
-                  </div>
+                  <button className={`${styles.navBtn} ${styles.prev}`} onClick={prevSlide}><ChevronLeft size={28} /></button>
+                  <button className={`${styles.navBtn} ${styles.next}`} onClick={nextSlide}><ChevronRight size={28} /></button>
                 </>
               )}
-              
               {selectedProject.gallery.length === 0 && (
                  <div className={`${styles.slide} ${styles.activeSlide}`} style={{ backgroundImage: `url(${selectedProject.cover})` }} />
               )}
             </div>
 
-            {/* BODY DEL MODAL */}
             <div className={styles.modalBody}>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
                  <div className={styles.badge} style={{ position: 'static' }}>
-                    {selectedProject.icon}
-                    <span>{selectedProject.badge}</span>
+                    {selectedProject.icon} <span>{selectedProject.badge}</span>
                  </div>
+                 {/* BADGE "IN PROGRESS" EN EL MODAL */}
                  {selectedProject.inProgress && (
                    <div className={styles.badge} style={{ background: 'rgba(255, 165, 0, 0.2)', borderColor: 'orange', color: 'orange' }}>
                       <Construction size={14} />
-                      <span>In Progress</span>
+                      <span>{lang === 'es' ? 'En Progreso' : 'In Progress'}</span>
                    </div>
                  )}
               </div>
-
-              <h2 className={styles.modalTitle}>{t.projects[`${selectedProject.key}_title`]}</h2>
-              <p className={styles.modalDesc}>{t.projects[`${selectedProject.key}_desc`]}</p>
-
-              {/* LÓGICA DE BOTÓN ARREGLADA */}
+              
+              <h2 className={styles.modalTitle}>{selectedProject.title}</h2>
+              <p className={styles.modalDesc}>{selectedProject.desc}</p>
+              
+              {/* LÓGICA DEL BOTÓN: DESHABILITADO SI ESTÁ EN PROGRESO */}
               {selectedProject.inProgress ? (
                 <button className={styles.disabledBtn} disabled>
-                   Wait for it... <Construction size={18} />
+                   {lang === 'es' ? 'En construcción...' : 'In Progress...'} <Construction size={18} />
                 </button>
+              ) : selectedProject.link.startsWith('/') ? (
+                <Link to={selectedProject.link} className={styles.visitBtn} onClick={handleClose}>
+                  View Gallery <ExternalLink size={18} />
+                </Link>
               ) : (
-                // SI EL LINK EMPIEZA CON '/', ES INTERNO -> USA <Link>
-                selectedProject.link.startsWith('/') ? (
-                  <Link to={selectedProject.link} className={styles.visitBtn} onClick={handleClose}>
-                    View Gallery <ExternalLink size={18} />
-                  </Link>
-                ) : (
-                  // SI NO, ES EXTERNO -> USA <a>
-                  <a href={selectedProject.link} target="_blank" rel="noopener noreferrer" className={styles.visitBtn}>
-                    Visit Project <ExternalLink size={18} />
-                  </a>
-                )
+                <a href={selectedProject.link} target="_blank" rel="noopener noreferrer" className={styles.visitBtn}>
+                  Visit Project <ExternalLink size={18} />
+                </a>
               )}
             </div>
-
           </div>
         </div>,
         document.body

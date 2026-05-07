@@ -1,49 +1,84 @@
-import React from 'react';
-import { 
-  FaReact, FaHtml5, FaCss3Alt, FaGitAlt, FaFigma, 
-  FaGithub, FaSass, FaMobileAlt 
-} from 'react-icons/fa';
-import { SiNextdotjs, SiJavascript, SiVite } from 'react-icons/si';
+import React, { useState } from 'react';
 import styles from './TechTicker.module.css';
 
-// Lista de Tecnologías (Puedes cambiar nombres e iconos)
+import { 
+  FaReact, FaHtml5, FaCss3Alt, FaGitAlt, FaFigma, 
+  FaGithub, FaSass, FaMobileAlt
+} from 'react-icons/fa';
+
+import { 
+  SiNextdotjs, SiJavascript, SiVite, 
+  SiSupabase, SiN8N, SiVercel 
+} from 'react-icons/si';
+
 const techs = [
-  { name: "React", icon: <FaReact size={40} /> },        // Átomo de React
-  { name: "Next.js", icon: <SiNextdotjs size={40} /> },  // La 'N' de Next
-  { name: "JavaScript", icon: <SiJavascript size={40} /> }, // JS Amarillo (en hover)
-  { name: "HTML", icon: <FaHtml5 size={40} /> },         // Escudo HTML5
-  { name: "CSS", icon: <FaCss3Alt size={40} /> },        // Escudo CSS3
-  { name: "Git", icon: <FaGitAlt size={40} /> },         // Diamante de Git
-  { name: "Figma", icon: <FaFigma size={40} /> },        // La F de Figma
-  { name: "Vite", icon: <SiVite size={40} /> },          // Rayo de Vite
-  { name: "Mobile", icon: <FaMobileAlt size={40} /> },   // Icono genérico móvil
-  { name: "GitHub", icon: <FaGithub size={40} /> },      // Gato de GitHub
-  { name: "Sass", icon: <FaSass size={40} /> },          // Logo de Sass
+  { name: "React", icon: <FaReact size={40} /> },        
+  { name: "Next.js", icon: <SiNextdotjs size={40} /> },  
+  { name: "JavaScript", icon: <SiJavascript size={40} /> }, 
+  { name: "HTML", icon: <FaHtml5 size={40} /> },         
+  { name: "CSS", icon: <FaCss3Alt size={40} /> },        
+  { name: "Git", icon: <FaGitAlt size={40} /> },         
+  { name: "Figma", icon: <FaFigma size={40} /> },        
+  { name: "Vite", icon: <SiVite size={40} /> },          
+  { name: "Mobile", icon: <FaMobileAlt size={40} /> },   
+  { name: "GitHub", icon: <FaGithub size={40} /> },      
+  { name: "Sass", icon: <FaSass size={40} /> },          
+  { name: "Supabase", icon: <SiSupabase size={40} /> },  
+  { name: "n8n", icon: <SiN8N size={40} /> },            
+  { name: "Vercel", icon: <SiVercel size={40} /> },      
 ];
 
 export default function TechTicker() {
-  return (
-    <div className={styles.tickerContainer}>
-      {/* El degradado a los lados (Fade) se hace con CSS Mask en el container.
-         Aquí dentro ponemos la pista (track) que se mueve.
-      */}
-      
-      <div className={styles.track}>
-        {/* Renderizamos la lista PRIMERA vez */}
-        {techs.map((item, index) => (
-          <div key={`original-${index}`} className={styles.item}>
-            <span className={styles.icon}>{item.icon}</span>
-            <span className={styles.name}>{item.name}</span>
-          </div>
-        ))}
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-        {/* Renderizamos la lista SEGUNDA vez (para el loop infinito) */}
-        {techs.map((item, index) => (
-          <div key={`dupe-${index}`} className={styles.item}>
-            <span className={styles.icon}>{item.icon}</span>
-            <span className={styles.name}>{item.name}</span>
+  const showPopup = isHovered || isMobileOpen;
+
+  return (
+    <div className={styles.sectionWrapper}>
+      
+      {/* --- BOTÓN PARA MÓVIL --- */}
+      <div className={styles.mobileAction}>
+        <button 
+          className={styles.mobileBtn} 
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+        >
+          {isMobileOpen ? "Cerrar Stack" : "Click para ver mi stack"}
+        </button>
+      </div>
+
+      {/* --- CARTEL INDICADOR PARA DESKTOP --- */}
+      <div className={`${styles.desktopHint} ${isHovered ? styles.hiddenHint : ''}`}>
+        Pasa el mouse para ver el stack completo ✨
+      </div>
+
+      <div 
+        className={styles.tickerContainer}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* CINTA ANIMADA */}
+        <div className={`${styles.tickerTrack} ${showPopup ? styles.paused : ''}`}>
+          {techs.map((tech, index) => (
+            <div key={index} className={styles.tickerItem}>{tech.icon}</div>
+          ))}
+          {techs.map((tech, index) => (
+            <div key={`dup-${index}`} className={styles.tickerItem}>{tech.icon}</div>
+          ))}
+        </div>
+
+        {/* POPUP DE LISTA COMPLETA */}
+        <div className={`${styles.popupList} ${showPopup ? styles.showPopup : ''}`}>
+          <h4 className={styles.popupTitle}>Mi Stack Tecnológico</h4>
+          <div className={styles.popupGrid}>
+            {techs.map((tech, i) => (
+              <div key={`popup-${i}`} className={styles.popupItem}>
+                {React.cloneElement(tech.icon, { size: 18 })}
+                <span>{tech.name}</span>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );

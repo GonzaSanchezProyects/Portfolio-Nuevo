@@ -1,82 +1,200 @@
-.tickerContainer {
-  width: 100%;
-  max-width: 1000px; /* Ajusta según tu diseño */
-  margin: 4rem auto; /* Espacio vertical */
-  margin-top: 2rem;
-  overflow: hidden; /* Oculta lo que se sale de la pantalla */
+.sectionWrapper {
   position: relative;
-  
-  /* LA MAGIA: Máscara de degradado para desvanecer bordes */
-  /* Hace que los iconos aparezcan de la nada a la izquierda y desaparezcan a la derecha */
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 10%,
-    black 90%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 10%,
-    black 90%,
-    transparent 100%
-  );
+  width: 100%;
 }
 
-.track {
+/* --- BOTÓN MÓVIL (Oculto en Desktop) --- */
+.mobileAction {
+  display: none;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.mobileBtn {
+  background: rgba(0, 255, 204, 0.1);
+  border: 1px solid rgba(0, 255, 204, 0.3);
+  color: #00ffcc;
+  padding: 8px 24px;
+  border-radius: 100px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 255, 204, 0.05);
+}
+
+.mobileBtn:active {
+  transform: scale(0.95);
+  background: rgba(0, 255, 204, 0.2);
+}
+
+/* --- CARTEL DESKTOP ("Pasa el mouse...") --- */
+.desktopHint {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: opacity 0.4s ease;
+  animation: pulseHint 2.5s infinite;
+  pointer-events: none; /* Evita que interrumpa el hover si el mouse lo toca */
+}
+
+/* Oculta el cartel suavemente cuando el popup se abre */
+.hiddenHint {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; color: #00ffcc; }
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.tickerContainer {
+  position: relative;
+  width: 100%;
+  padding: 2rem 0 3rem 0; /* Ajustado un poco para hacer espacio al hint */
+  overflow: visible; 
+  cursor: pointer;
+}
+
+/* --- CINTA ANIMADA --- */
+.tickerTrack {
   display: flex;
-  width: max-content; /* El ancho es la suma de todos los items */
-  gap: 3rem; /* Espacio entre items */
-  
-  /* Animación */
-  animation: scroll 25s linear infinite;
+  width: max-content;
+  gap: 4rem;
+  padding: 0 2rem;
+  animation: scroll 35s linear infinite;
 }
 
-/* Pausar animación si el usuario pasa el mouse para leer */
-.track:hover {
+.paused {
   animation-play-state: paused;
 }
 
-.item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--text-secondary); /* Color sutil */
-  font-weight: 600;
-  font-size: 2.5rem;
-  white-space: nowrap; /* Evita que el texto se rompa */
-  transition: color 0.3s, transform 0.3s;
-  
-  /* Hacemos que sea seleccionable o clickeable si quieres */
-  cursor: default;
+.tickerItem {
+  color: #666;
+  transition: all 0.3s ease;
 }
 
-.item:hover {
-  color: var(--primary); /* Se ilumina al pasar el mouse */
+.tickerItem:hover {
+  color: #00ffcc;
   transform: scale(1.1);
 }
 
-.icon {
-  display: flex;
-  align-items: center;
-  color: var(--primary); /* Iconos con color principal */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
-/* KEYFRAMES */
-/* Movemos el track desde 0 hasta -50% (la mitad exacta) */
-/* Como duplicamos la lista, al llegar al 50% es idéntico al 0%, creando el loop invisible */
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
+/* --- POPUP DE LISTA COMPLETA --- */
+.popupList {
+  position: absolute;
+  top: 100%; 
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(15, 15, 15, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.5rem;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 800px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.showPopup {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+.popupTitle {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.popupGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1.2rem;
+}
+
+.popupItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px 18px;
+  border-radius: 14px;
+  color: #aaa;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.popupItem:hover {
+  background: rgba(0, 255, 204, 0.08);
+  border-color: rgba(0, 255, 204, 0.3);
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.popupItem svg {
+  color: #00ffcc;
+}
+
+/* ========================================= */
+/* === RESPONSIVE MÓVIL (Smartphones) === */
+/* ========================================= */
+@media (max-width: 768px) {
+  .mobileAction {
+    display: block; 
   }
-  100% {
-    transform: translateX(-50%); /* Ojo: Depende del gap, si salta, ajusta esto */
-    /* NOTA TÉCNICA:
-       Para un loop matemático perfecto con gap, a veces se usa calc().
-       Pero con duplicación simple suele bastar. 
-       Si ves un "salto", asegúrate de que el gap sea parte del cálculo.
-       En este caso simple, -50% suele funcionar si los dos bloques son idénticos.
-    */
+
+  .desktopHint {
+    display: none; /* Ocultamos el hint en móviles porque ya está el botón */
+  }
+
+  .tickerContainer {
+    padding: 1rem 0; 
+  }
+
+  .popupList {
+    padding: 1.5rem;
+    border-radius: 20px;
+    width: 95%; 
+  }
+
+  .popupTitle {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .popupGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .popupItem {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    border-radius: 10px;
   }
 }
