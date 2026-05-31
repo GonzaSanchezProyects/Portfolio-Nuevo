@@ -16,6 +16,7 @@ html, body {
   -moz-user-select: none;    /* Firefox */
   -ms-user-select: none;     /* IE/Edge */
   user-select: none;         /* Standard */
+  overscroll-behavior: none;
 }
 
 html {

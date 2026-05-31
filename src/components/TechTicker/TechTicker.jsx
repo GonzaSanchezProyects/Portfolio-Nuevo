@@ -3,7 +3,7 @@ import styles from './TechTicker.module.css';
 
 import { 
   FaReact, FaHtml5, FaCss3Alt, FaGitAlt, FaFigma, 
-  FaGithub, FaSass, FaMobileAlt
+  FaGithub, FaSass, FaMobileAlt, FaTimes
 } from 'react-icons/fa';
 
 import { 
@@ -29,56 +29,61 @@ const techs = [
 ];
 
 export default function TechTicker() {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-
-  const showPopup = isHovered || isMobileOpen;
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className={styles.sectionWrapper}>
       
-      {/* --- BOTÓN PARA MÓVIL --- */}
-      <div className={styles.mobileAction}>
+      {/* --- BOTÓN UNIFICADO (Web y Celular) --- */}
+      <div className={styles.actionContainer}>
         <button 
-          className={styles.mobileBtn} 
-          onClick={() => setIsMobileOpen(!isMobileOpen)}
+          className={styles.toggleBtn} 
+          onClick={() => setIsOpen(true)}
         >
-          {isMobileOpen ? "Cerrar Stack" : "Click para ver mi stack"}
+          Ver mi stack tecnológico
         </button>
       </div>
 
-      {/* --- CARTEL INDICADOR PARA DESKTOP --- */}
-      <div className={`${styles.desktopHint} ${isHovered ? styles.hiddenHint : ''}`}>
-        Pasa el mouse para ver el stack completo ✨
-      </div>
-
-      <div 
-        className={styles.tickerContainer}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        {/* CINTA ANIMADA */}
-        <div className={`${styles.tickerTrack} ${showPopup ? styles.paused : ''}`}>
-          {techs.map((tech, index) => (
-            <div key={index} className={styles.tickerItem}>{tech.icon}</div>
-          ))}
-          {techs.map((tech, index) => (
-            <div key={`dup-${index}`} className={styles.tickerItem}>{tech.icon}</div>
-          ))}
-        </div>
-
-        {/* POPUP DE LISTA COMPLETA */}
-        <div className={`${styles.popupList} ${showPopup ? styles.showPopup : ''}`}>
-          <h4 className={styles.popupTitle}>Mi Stack Tecnológico</h4>
-          <div className={styles.popupGrid}>
-            {techs.map((tech, i) => (
-              <div key={`popup-${i}`} className={styles.popupItem}>
-                {React.cloneElement(tech.icon, { size: 18 })}
-                <span>{tech.name}</span>
-              </div>
+      <div className={styles.tickerContainer}>
+        {/* ENVOLTORIO PARA EVITAR EL SCROLL HORIZONTAL */}
+        <div className={styles.trackWrapper}>
+          {/* CINTA ANIMADA */}
+          <div className={`${styles.tickerTrack} ${isOpen ? styles.paused : ''}`}>
+            {techs.map((tech, index) => (
+              <div key={index} className={styles.tickerItem}>{tech.icon}</div>
+            ))}
+            {techs.map((tech, index) => (
+              <div key={`dup-${index}`} className={styles.tickerItem}>{tech.icon}</div>
             ))}
           </div>
         </div>
+
+        {/* OVERLAY Y POPUP DE LISTA COMPLETA (MODAL FIJO) */}
+        <div 
+          className={`${styles.modalOverlay} ${isOpen ? styles.showOverlay : ''}`}
+          onClick={() => setIsOpen(false)}
+        >
+          <div 
+            className={`${styles.popupList} ${isOpen ? styles.showPopup : ''}`}
+            onClick={(e) => e.stopPropagation()} /* Evita que el clic cierre el modal si tocas adentro */
+          >
+            {/* BOTÓN DE CERRAR DENTRO DEL POPUP */}
+            <button className={styles.closeBtn} onClick={() => setIsOpen(false)}>
+              <FaTimes size={20} />
+            </button>
+
+            <h4 className={styles.popupTitle}>Mi Stack Tecnológico</h4>
+            <div className={styles.popupGrid}>
+              {techs.map((tech, i) => (
+                <div key={`popup-${i}`} className={styles.popupItem}>
+                  {React.cloneElement(tech.icon, { size: 18 })}
+                  <span>{tech.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
